@@ -1,0 +1,21 @@
+{
+  "short_name": "Mes dettes",
+  "name": "Mes dettes",
+  "icons": [
+    {
+      "src": "/192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/?utm_source=a2hs",
+  "background_color": "#F44336",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#F44336"
+}

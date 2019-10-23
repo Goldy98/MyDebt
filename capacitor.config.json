@@ -1,0 +1,7 @@
+{
+  "appId": "com.thesama.mydebt",
+  "appName": "MyDebt",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "dist"
+}
