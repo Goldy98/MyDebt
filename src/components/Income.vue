@@ -4,7 +4,7 @@
 
     <v-list flat style="background-color: transparent">
       <v-list-item-group v-model="item" color="red">
-        <v-list-item v-for="(item, i) in items" :key="i">
+        <v-list-item v-for="(item, i) in items" :key="i" @click="showDialog">
           <v-list-item-avatar>
             <v-img v-html="generateIdenticon(item.text)"></v-img>
           </v-list-item-avatar>
@@ -20,12 +20,25 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
+
+    <AddDialog
+      :config="dialogConfig"
+      v-if="dialogConfig.displayed"
+      @onDialogDismiss="onDialogDismiss"
+    />
   </div>
 </template>
 
 <script>
 import jdenticon from "jdenticon";
+import AddDialog from "./AddDialog";
+import store from "../store";
+import { mapGetters } from "vuex";
+
 export default {
+  components: {
+    AddDialog
+  },
   data: () => ({
     item: 1,
     items: [
@@ -41,7 +54,13 @@ export default {
         statut: "not-paid",
         avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
       }
-    ]
+    ],
+    dialogConfig: {
+      headline: "Enregistrer une créance",
+      inputLabel: "Nom du débiteur",
+      type: "text",
+      displayed: false
+    }
   }),
   mounted() {
     jdenticon.config = {
@@ -59,6 +78,20 @@ export default {
   methods: {
     generateIdenticon(text) {
       return jdenticon.toSvg(text, 100);
+    },
+    showDialog() {
+      this.dialogConfig.displayed = true;
+    },
+    onDialogDismiss(dialogResult) {
+      this.dialogConfig.displayed = false;
+    }
+  },
+  computed: {
+    ...mapGetters(["activeComponent", "fabClicked"])
+  },
+  watch: {
+    fabClicked(newValue, oldValue) {
+      this.showDialog();
     }
   }
 };

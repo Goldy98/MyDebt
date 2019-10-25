@@ -2,7 +2,12 @@
   <v-app>
     <v-app-bar app>
       <v-app-bar app color="red" dark>
-        <v-toolbar-title>Mes dettes & créances</v-toolbar-title>
+        <v-icon class="mr-3">mdi-arrow-left</v-icon>
+        <v-toolbar-title>AXO | Mes dettes & créances</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon>
+          <v-icon>mdi-alert-circle</v-icon>
+        </v-btn>
       </v-app-bar>
     </v-app-bar>
 
@@ -16,7 +21,7 @@
     </v-content>
 
     <v-fab-transition>
-      <v-btn color="red" class="mb-15" fab large dark bottom right fixed>
+      <v-btn color="red" class="mb-15" fab large dark bottom right fixed @click="onFabClick">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-fab-transition>
@@ -41,6 +46,8 @@
 import Debt from "./components/Debt";
 import Income from "./components/Income";
 import router from "./router";
+import store from "./store";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "App",
@@ -52,12 +59,24 @@ export default {
     activeBtn: 0
   }),
   methods: {
+    ...mapActions(["setFabStatut"]),
     onDebtClick() {
-      router.push("/debt");
+      if (router.history.current.name !== "Debt" && "Home")
+        router.push("/debt");
     },
     onIncomeClick() {
-      router.push("/income");
+      if (router.history.current.name !== "Income") router.push("/income");
+    },
+    onFabClick() {
+      this.setFabStatut();
     }
+  },
+  computed: {
+    ...mapGetters(["fabClicked"])
+  },
+  watch: {
+    // Called when firstName changes value
+    fabClicked(val, oldVal) {}
   }
 };
 </script>

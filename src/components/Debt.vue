@@ -20,12 +20,24 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
+
+    <AddDialog
+      :config="dialogConfig"
+      v-if="dialogConfig.displayed"
+      @onDialogDismiss="onDialogDismiss"
+    />
   </div>
 </template>
 
 <script>
 import jdenticon from "jdenticon";
+import AddDialog from "./AddDialog";
+import { mapGetters } from "vuex";
+
 export default {
+  components: {
+    AddDialog
+  },
   data: () => ({
     item: 1,
     items: [
@@ -44,7 +56,13 @@ export default {
         subtitle: "5 prêts | Total : 20 000",
         statut: "paid"
       }
-    ]
+    ],
+    dialogConfig: {
+      headline: "Enregistrer une dette",
+      inputLabel: "Nom du créancier",
+      type: "text",
+      displayed: false
+    }
   }),
   mounted() {
     jdenticon.config = {
@@ -62,6 +80,20 @@ export default {
   methods: {
     generateIdenticon(text) {
       return jdenticon.toSvg(text, 100);
+    },
+    showDialog() {
+      this.dialogConfig.displayed = true;
+    },
+    onDialogDismiss(dialogResult) {
+      this.dialogConfig.displayed = false;
+    }
+  },
+  computed: {
+    ...mapGetters(["activeComponent", "fabClicked"])
+  },
+  watch: {
+    fabClicked(newValue, oldValue) {
+      this.showDialog();
     }
   }
 };
